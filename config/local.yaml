@@ -1,0 +1,2 @@
+spec:
+  websocket: "wss://ws-feed.exchange.coinbase.com"

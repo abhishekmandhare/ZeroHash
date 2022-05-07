@@ -10,7 +10,7 @@ import (
 
 func RunAppServer(ctx context.Context) func() error {
 	return func() error { 
-		ctx.Err()
+
 		return nil
 	}
 }

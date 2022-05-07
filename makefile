@@ -1,5 +1,5 @@
 run:
-	go run .\cmd\main.go
+	go run .\cmd\main.go --config .\config\local.yaml
 
 .PHONY: docker-clean
 docker-clean:
