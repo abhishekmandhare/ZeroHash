@@ -41,8 +41,8 @@ func loadConfig(v *viper.Viper, flags *pflag.FlagSet) (*AppConfiguration, error)
 func loadConfigFile(v *viper.Viper) error {
 	configFile := v.GetString("config")
 	if configFile == "" {
-		v.AddConfigPath("./app/config")
-		v.SetConfigName("config")
+		v.AddConfigPath("/config")
+		v.SetConfigName("local")
 		v.SetConfigType("yaml")
 	} else {
 		v.SetConfigFile(configFile)

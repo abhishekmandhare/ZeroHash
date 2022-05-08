@@ -5,9 +5,10 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o ./dist/vwap ./cmd
 
-FROM scratch
+FROM golang:alpine
 
 WORKDIR /app
 COPY --from=builder /src/dist/vwap .
+COPY /config /config
 
-CMD ["./vwap"]
+CMD ["./vwap "]

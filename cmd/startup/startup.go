@@ -2,16 +2,94 @@ package startup
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
+
+	"github.com/abhishekmandhare/zeroHash/internal/config"
+	"github.com/gorilla/websocket"
 )
 
-func RunAppServer(ctx context.Context) func() error {
-	return func() error { 
+type CoinbaseSubscribeMsg struct {
+	Type       string   `json:"type"`
+	ProductIDs []string `json:"product_ids"`
+	Channels   []string `json:"channels"`
+}
 
-		return nil
+type MatchMsg struct {
+	Type          string `json:"type"`
+	TradeID       int    `json:"trade_id"`
+	MarkerOrderId string `json:"marker_order_id"`
+	TakerOrderId  string `json:"taker_order_id"`
+	Side          string `json:"side"`
+	Size          string `json:"size"`
+	Price         string `json:"price"`
+	ProductID     string `json:"product_id"`
+	Sequence      int    `json:"sequence"`
+	Time          string `json:"time"`
+}
+
+func RunAppServer(ctx context.Context, config *config.AppConfiguration) func() error {
+	return func() error {
+
+		c, _, err := websocket.DefaultDialer.Dial(config.Spec.Websocket, nil)
+		if err != nil {
+			log.Fatalf("dial: %v", err)
+		}
+		defer c.Close()
+
+		// sub
+		subMessage := CoinbaseSubscribeMsg{
+			Type:       "subscribe",
+			Channels:   []string{"matches"},
+			ProductIDs: []string{"ETH-USD"},
+		}
+
+		subEvent, err := json.Marshal(subMessage)
+		if err != nil {
+			log.Fatalf("Unable to marshal : %v",err)
+			return err
+		}
+
+		err = c.WriteMessage(websocket.TextMessage, subEvent)
+		if err != nil {
+			log.Fatalf("write err : %v", err)
+			return err
+		}
+
+		done := make(chan interface{})
+
+		go func() {
+			defer close(done)
+			for {
+				m := &MatchMsg{}
+				 err := c.ReadJSON(m)
+				if err != nil {
+					log.Printf("read err: %v", err)
+					return
+				}
+				
+				log.Printf("received: %v", m)
+			}
+		}()
+
+		ticker := time.NewTicker(time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-done:
+				return nil
+			case <-ctx.Done():
+				log.Println("Terminated by upstream")
+				return nil
+
+			}
+		}
 	}
 }
 

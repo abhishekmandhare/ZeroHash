@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    command: sh -c ./vwap --config ./config/local.yaml
+    
     
 
   
