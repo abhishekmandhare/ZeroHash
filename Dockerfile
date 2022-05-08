@@ -11,4 +11,4 @@ WORKDIR /app
 COPY --from=builder /src/dist/vwap .
 COPY /config /config
 
-CMD ["./vwap "]
+CMD ["./vwap"]

@@ -7,18 +7,15 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
 	"github.com/abhishekmandhare/zeroHash/internal/config"
+	"github.com/abhishekmandhare/zeroHash/internal/models"
+	"github.com/abhishekmandhare/zeroHash/internal/vwap"
 	"github.com/gorilla/websocket"
 )
-
-type CoinbaseSubscribeMsg struct {
-	Type       string   `json:"type"`
-	ProductIDs []string `json:"product_ids"`
-	Channels   []string `json:"channels"`
-}
 
 type MatchMsg struct {
 	Type          string `json:"type"`
@@ -31,6 +28,12 @@ type MatchMsg struct {
 	ProductID     string `json:"product_id"`
 	Sequence      int    `json:"sequence"`
 	Time          string `json:"time"`
+}
+
+type CoinbaseSubscribeMsg struct {
+	Type       string   `json:"type"`
+	ProductIDs []string `json:"product_ids"`
+	Channels   []string `json:"channels"`
 }
 
 func RunAppServer(ctx context.Context, config *config.AppConfiguration) func() error {
@@ -51,7 +54,7 @@ func RunAppServer(ctx context.Context, config *config.AppConfiguration) func() e
 
 		subEvent, err := json.Marshal(subMessage)
 		if err != nil {
-			log.Fatalf("Unable to marshal : %v",err)
+			log.Fatalf("Unable to marshal : %v", err)
 			return err
 		}
 
@@ -63,16 +66,37 @@ func RunAppServer(ctx context.Context, config *config.AppConfiguration) func() e
 
 		done := make(chan interface{})
 
+		tradeChan := make(chan models.Trade)
+		vwapCalc := vwap.NewVwap(tradeChan)
+		go vwapCalc.RunCalculator()
+
 		go func() {
 			defer close(done)
 			for {
 				m := &MatchMsg{}
-				 err := c.ReadJSON(m)
+				err := c.ReadJSON(m)
 				if err != nil {
 					log.Printf("read err: %v", err)
 					return
 				}
-				
+
+				price, err := strconv.ParseFloat(m.Price, 64)
+				if err != nil {
+					continue
+				}
+
+				quantity, err := strconv.ParseFloat(m.Size, 64)
+				if err != nil {
+					continue
+				}
+
+				trade := &models.Trade{
+					Price:    price,
+					Quantity: quantity,
+				}
+
+				tradeChan <- *trade
+
 				log.Printf("received: %v", m)
 			}
 		}()
