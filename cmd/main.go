@@ -7,6 +7,7 @@ import (
 
 	"github.com/abhishekmandhare/zeroHash/cmd/startup"
 	"github.com/abhishekmandhare/zeroHash/internal/config"
+	"github.com/abhishekmandhare/zeroHash/internal/models"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -22,7 +23,9 @@ func main() {
 
 	ctx := context.Background()
 	errGrp, gCtx := errgroup.WithContext(ctx)
-	errGrp.Go(startup.RunAppServer(gCtx, config))
+	tradeChannel := make(chan models.Trade, 100)
+	errGrp.Go(startup.RunAppClient(gCtx, config, tradeChannel))
+	errGrp.Go(startup.RunPipeline(ctx, config, tradeChannel))
 	errGrp.Go(startup.RunSignalListener(gCtx))
 
 	if err := errGrp.Wait(); err != nil {

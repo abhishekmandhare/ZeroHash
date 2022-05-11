@@ -5,5 +5,6 @@ type AppConfiguration struct {
 }
 
 type specConfiguration struct {
-	Websocket string `yaml:"websocket"`
+	Websocket string   `yaml:"websocket"`
+	Products  []string `yaml:"products"`
 }

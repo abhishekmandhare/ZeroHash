@@ -9,18 +9,27 @@ import (
 
 type Vwap struct {
 	vwapWindow      *queue.Queue[models.Trade]
-	chanTrade       <-chan models.Trade
+	chanTrade       chan models.Trade
 	vwapSum         float64
 	vwapQuantitySum float64
 }
 
 const WindowSize int = 200
 
-func NewVwap(chanTrade <-chan models.Trade) *Vwap {
+func NewVwap() *Vwap {
+	chanTrade := make(chan models.Trade)
 	return &Vwap{
 		vwapWindow: queue.NewQueue[models.Trade](),
 		chanTrade:  chanTrade,
 	}
+}
+
+func (v *Vwap) SendTradeToChannel(trade models.Trade) {
+	v.chanTrade <- trade
+}
+
+func (v *Vwap) CloseChannel() {
+	close(v.chanTrade)
 }
 
 func (v *Vwap) RunCalculator() error {
@@ -41,7 +50,7 @@ func (v *Vwap) RunCalculator() error {
 		}
 		vwap := v.Calculate(&t, &removeElem)
 		if vwap != 0 {
-			fmt.Printf("Vwap : %v\n", vwap)
+			fmt.Printf("Currency %v, Vwap : %v\n", t.Currency, vwap)
 		}
 
 	}

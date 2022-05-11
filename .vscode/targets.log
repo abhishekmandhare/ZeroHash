@@ -1,0 +1,371 @@
+make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-pc-mingw32
+ 
+
+# Make data base, printed on Thu May 12 01:33:17 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+HOMEDRIVE = C:
+# automatic
+@F = $(notdir $@)
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile
+CURDIR := c:/git/Golang/ZeroHash
+# default
+SHELL := sh.exe
+# environment
+WINDIR = C:\WINDOWS
+# envi 
+ronment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+ONEDRIVE = C:\Users\DELL\OneDrive
+# environment
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+# makefile (from `makefile', line 1)
+MAKEFILE_LIST :=  makefile
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
+# environment
+TMP = C:\Users\DELL\AppData\Local\Temp
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+PROGRAMW6432 = C:\Program Files
+# environment
+PROGRAMDATA = C:\ProgramData
+# environment
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-4252373a-7806-4d9c-b797-c9051eea9e73-sock
+# environment
+VSCODE_CWD = C:\Users\DELL\AppData\Local\Programs\Microsoft VS Code
+# environment
+GOPROXY = https://proxy.golang.org,direct
+# environment
+PATH = C:\Python27\;C:\Python27\Scripts;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Android;C:\PROGRA~2\ThriXXX\3D SexVilla;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\CMake\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Go\bin;C:\Users\DELL\buf;C:\Users\DELL\scoop\shims;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;C:\Users\DELL\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\DELL\.dotnet\tools;C:\Program Files (x86)\FAHClient;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;C:\Users\DELL\.dotnet\tools;C:\Users\DELL\AppData\Roaming\npm;C:\Program Files\Docker\Docker\resources\bin;C:\Users\DELL\go\bin;C:\Users\DELL\buf;
+# environment
+COMMONPROGRAMW6432 = C:\Program Files\Common Files
+# environment
+CHOCOLATEYLASTPATHUPDATE = 132290744516606241
+# environment
+PROCESSOR_ARCHITECTURE = x86
+# environment
+USERPROFILE = C:\Users\DELL
+# environment
+CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
+# environment
+DOCKER = C:\Program Files\Docker\Docker\resources\bin\docker.exe
+# environment
+ALLUSERSPROFILE = C:\ProgramData
+# environment 
+
+GOPATH = C:\Users\DELL\go
+# environment
+VSCODE_LOG_STACK = false
+# environment
+NUMBER_OF_PROCESSORS = 8
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives
+# automatic
+%F = $(notdir $%)
+# environment
+ANDROID_SDK_HOME = C:\Android
+# environment
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_17692_GYXWQXTWFCSVKOLA
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+COMPUTERNAME = DELL
+# environment
+PROGRAMFILES = C:\Program Files (x86)
+# environment
+DRIVERDATA = C:\Windows\System32\Drivers\DriverData
+# environment
+BUF = C:\Users\DELL\buf\buf.exe
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+USERNAME = DELL
+# environment
+PUBLIC = C:\Users\Public
+# environment
+GOMODCACHE = C:\Users\DELL\go\pkg\mod
+# environment
+VSCODE_CODE_CACHE_PATH = C:\Users\DELL\AppData\Roaming\Code\CachedData\57fd6d0195bb9b9d1b49f6da5db789060795de47
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
+# environment
+LOGONSERVER = \\DELL
+# environment
+ONEDRIVECONSUMER = C:\Users\DELL\OneDrive
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+USERDOMAIN = DELL
+# environment
+MAKE = C:\Program Files (x86)\GnuWin32\bin\make.exe
+# default
+MAKECMDGOALS := all
+# default
+MAKE_VERSION := 3.81
+# makefile
+.DEFAULT_GOAL := run
+# environment
+PROGRAMFILES(X86) = C:\Program Files (x86)
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LOCALAPPDATA = C:\Users\DE 
+LL\AppData\Local
+# environment
+PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+# default
+MAKE_COMMAND := make.exe
+# environment
+PROCESSOR_ARCHITEW6432 = AMD64
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# environment
+PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+# environment
+OS = Windows_NT
+# environment
+VSCODE_IPC_HOOK = \\.\pipe\94d617bfb1ac0c411605adcb3cbd2f14-1.67.0-main-sock
+# environment
+HOMEPATH = \Us 
+ers\DELL
+# environment
+COMMONPROGRAMFILES(X86) = C:\Program Files (x86)\Common Files
+# environment
+PROMPT = $P$G
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+SYSTEMROOT = C:\WINDOWS
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+APPDATA = C:\Users\DELL\AppData\Roaming
+# environment
+TEMP = C:\Users\DELL\AppData\Local\Temp
+# environment
+COMSPEC = C:\WINDOWS\system32\cmd.exe
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+ 
+# environment
+LC_ALL = C
+# environment
+LACAL = aaa
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+SYSTEMDRIVE = C:
+# environment
+SESSIONNAME = Console
+# environment
+PROCESSOR_REVISION = 2a07
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+PROCESSOR_LEVEL = 6
+# environment
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# environment
+VSCODE_PID = 17692
+# environment
+USERDOMAIN_ROAMINGPROFILE = DELL
+# variable set hash-table stats:
+# Load=98/1024=10%, Rehash=0, Collisi 
+ons=10/119=8%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# C:\Python27\ (key C:/Python27/, mtime 1584597290): 15 files, no impossibilities.
+# C:\Program Files\Docker\Docker\resources\bin (key C:/Program Files/Docker/Docker/resources/bin, mtime 1649980933): 13 files, no impossibilities.
+# C:\Program Files\Go\bin (key C:/Program Files/Go/bin, mtime 1650055254): 4 files, no impossibilities.
+# C:\Android (key C:/Android, mtime 1590754234): 7 files, no impossibili 
+ties.
+# C:\Python27\Scripts (key C:/Python27/Scripts, mtime 1584597294): 7 files, no impossibilities.
+# C:\Windows\System32\WindowsPowerShell\v1.0\ (key C:/Windows/System32/WindowsPowerShell/v1.0/, mtime 1602624440): 30 files, no impossibilities.
+# C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1650116925): 180 files, no impossibilities.
+# . (key c:/git/Golang/ZeroHash, mtime 1652183857): 15 files, no impossibilities.
+# C:\Program Files\nodejs\ (key C:/Program Files/nodejs/, mtime 1620711648): 11 files, no impossibilities.
+# C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common (key C:/Program Files (x86)/NVIDIA Corporation/PhysX/Common, mtime 1551903630): 10 files, no impossibilities.
+# C:\Users\DELL\buf (key C:/Users/DELL/buf, mtime 1650207484): 3 files, no impossibilities.
+# C:\Users\DELL\AppData\Local\Programs\Microsoft VS Code\bin (key C:/Users/DELL/AppData/Local/Programs/Microsoft VS Code/bin, mtime 1651933314): 4 files, no impossibilities.
+# C:\ProgramData\chocolatey\bin (key C:/Program 
+Data/chocolatey/bin, mtime 1584597252): 13 files, no impossibilities.
+# C:\Program Files\dotnet\ (key C:/Program Files/dotnet/, mtime 1648795463): 11 files, no impossibilities.
+# C:\Program Files (x86)\FAHClient (key C:/Program Files (x86)/FAHClient, mtime 1584600099): 93 files, no impossibilities.
+# C:\Users\DELL\AppData\Roaming\npm (key C:/Users/DELL/AppData/Roaming/npm, mtime 1584597389): 6 files, no impossibilities.
+# C:\Users\DELL\.dotnet\tools (key C:/Users/DELL/.dotnet/tools, mtime 1624536630): 5 files, no impossibilities.
+# C:\Windows\System32\OpenSSH\: could not be stat'd.
+# C:\Program Files (x86)\Common Files\Oracle\Java\javapath (key C:/Program Files (x86)/Common Files/Oracle/Java/javapath, mtime 1598938038): 5 files, no impossibilities.
+# C:\PROGRA~2\ThriXXX\3D SexVilla: could not be stat'd.
+# C:\Program Files\Microsoft SQL Server\130\Tools\Binn\ (key C:/Program Files/Microsoft SQL Server/130/Tools/Binn/, mtime 1619817544): 4 files, no impossibilities.
+# C:\Windows (key C:/Windows, mtime 165011692 
+4): 115 files, no impossibilities.
+# C:\Users\DELL\scoop\shims (key C:/Users/DELL/scoop/shims, mtime 1650452875): 9 files, no impossibilities.
+# C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\ (key C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/, mtime 1619817559): 7 files, no impossibilities.
+# C:\Users\DELL\AppData\Local\Microsoft\WindowsApps (key C:/Users/DELL/AppData/Local/Microsoft/WindowsApps, mtime 1651134158): 17 files, no impossibilities.
+# C:\Users\DELL\ 
+go\bin (key C:/Users/DELL/go/bin, mtime 1651907423): 9 files, no impossibilities.
+# C:\Program Files\Git\cmd (key C:/Program Files/Git/cmd, mtime 1620711714): 8 files, no impossibilities.
+# C:\Windows\system32 (key C:/Windows/system32, mtime 1652253713): 3167 files, no impossibilities.
+# C:\Program Files\CMake\bin (key C:/Program Files/CMake/bin, mtime 1617181637): 7 files, no impossibilities.
+# C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static: could not be stat'd.
+# C:\Program Files (x86)\GnuWin 
+32\bin (key C:/Program Files (x86)/GnuWin32/bin, mtime 1649980941): 19 files, no impossibilities.
+
+# 3794 files, no impossibilities in 31 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+all:
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+docker-build:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been do 
+ne.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 10):
+	docker-compose build server
+	
+
+.PHONY: docker-clean docker-build docker-run vendor
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-05-07 17:54:33
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+docker-run: docker-clean docker-build
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 14):
+	docker-compose up server
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never  
+checked.
+#  File has not been updated.
+
+docker-clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 6):
+	docker-compose down
+	
+
+run:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 2):
+	go run .\cmd\main.go --config .\config\local.yaml
+	
+
+vendor:
+#  Phony target (pr 
+make.exe: *** No rule to make target `all'.  Stop.
+
+erequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `makefile', line 18):
+	go mod tidy
+	go mod vendor
+	
+
+# files hash-table stats:
+# Load=10/1024=1%, Rehash=0, Collisions=0/30=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Thu May 12 01:33:17 2022
+
+ 
