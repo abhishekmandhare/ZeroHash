@@ -17,7 +17,9 @@ import (
 func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeChannel chan<- models.Trade) func() error {
 	return func() error {
 		cl := client.NewClient(ctx, config.Spec.Products, config.Spec.Websocket)
-		cl.Subscribe()
+		if err := cl.Subscribe(); err != nil {
+			return err
+		}
 
 		defer close(tradeChannel)
 		for {

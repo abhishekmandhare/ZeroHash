@@ -2,6 +2,7 @@ package vwap
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/abhishekmandhare/zeroHash/internal/models"
 	"github.com/abhishekmandhare/zeroHash/internal/queue"
@@ -32,7 +33,7 @@ func (v *Vwap) CloseChannel() {
 	close(v.chanTrade)
 }
 
-func (v *Vwap) RunCalculator() error {
+func (v *Vwap) RunCalculator() {
 
 	for t := range v.chanTrade {
 		var removeElem models.Trade
@@ -43,7 +44,8 @@ func (v *Vwap) RunCalculator() error {
 			var err error
 			removeElem, err = v.vwapWindow.Pop()
 			if err != nil {
-				return err
+				log.Fatalf("Error running VWAP calculator: %v", err)
+				return
 			}
 			v.vwapWindow.Push(t)
 
@@ -54,7 +56,7 @@ func (v *Vwap) RunCalculator() error {
 		}
 
 	}
-	return nil
+
 }
 
 func (v *Vwap) Calculate(addElement *models.Trade, removeElement *models.Trade) float64 {

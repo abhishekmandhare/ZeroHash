@@ -17,3 +17,11 @@ docker-run:	docker-clean docker-build
 vendor:
 	go mod tidy
 	go mod vendor
+
+.PHONY: lint
+lint:
+	 golangci-lint run
+
+.PHONY: dep-install
+dep-install:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.46.1
