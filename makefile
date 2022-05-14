@@ -25,3 +25,7 @@ lint:
 .PHONY: dep-install
 dep-install:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.46.1
+
+.PHONY: test
+test: 
+	go test ./...

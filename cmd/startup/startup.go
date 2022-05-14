@@ -42,22 +42,19 @@ func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeCha
 
 func RunPipeline(ctx context.Context, config *config.AppConfiguration, tradeChannel <-chan models.Trade) func() error {
 	return func() error {
-		pipe := pipeline.NewPipeline(ctx, config.Spec.Products)
-
+		donePipe := make(chan interface{})
+		go func() {
+			defer func() { donePipe <- 1 }()
+			pipeline.Connect(tradeChannel, config.Spec.Products, config.Spec.VwapWindowSize)
+		}()
 		for {
 			select {
 			case <-ctx.Done():
 				log.Println("Pipeline terminated by upstream")
-				pipe.Close()
-
 				return nil
-			case t, ok := <-tradeChannel:
-				if !ok {
-					log.Println("Closing Pipeline, trade channel is closed")
-					pipe.Close()
-					return nil
-				}
-				pipe.SendTrade(t)
+			case <-donePipe:
+				log.Println("Pipeline closed.")
+				return nil
 			}
 		}
 	}

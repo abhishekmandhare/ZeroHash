@@ -1,75 +1,59 @@
 package vwap
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/abhishekmandhare/zeroHash/internal/models"
 	"github.com/abhishekmandhare/zeroHash/internal/queue"
+	"github.com/abhishekmandhare/zeroHash/internal/writer"
 )
 
 type Vwap struct {
 	vwapWindow      *queue.Queue[models.Trade]
-	chanTrade       chan models.Trade
+	chanTradeIn     <-chan models.Trade
+	chanTradeOut    chan<- writer.WriterData
 	vwapSum         float64
 	vwapQuantitySum float64
-}
-
-const WindowSize int = 200
-
-func NewVwap() *Vwap {
-	chanTrade := make(chan models.Trade)
-	return &Vwap{
-		vwapWindow: queue.NewQueue[models.Trade](),
-		chanTrade:  chanTrade,
+	windowSize      int
 	}
-}
 
-func (v *Vwap) SendTradeToChannel(trade models.Trade) {
-	v.chanTrade <- trade
-}
+func NewVwap(vwapWindowSize int, chanTradeIn <-chan models.Trade, chanTradeOut chan<- writer.WriterData) *Vwap {
 
-func (v *Vwap) CloseChannel() {
-	close(v.chanTrade)
+	return &Vwap{
+		vwapWindow:   queue.NewQueue[models.Trade](),
+		chanTradeIn:  chanTradeIn,
+		chanTradeOut: chanTradeOut,
+		windowSize:   vwapWindowSize,
+	}
 }
 
 func (v *Vwap) RunCalculator() {
-
-	for t := range v.chanTrade {
-		var removeElem models.Trade
-
-		if v.vwapWindow.Len() < WindowSize {
-			v.vwapWindow.Push(t)
-		} else {
-			var err error
-			removeElem, err = v.vwapWindow.Pop()
-			if err != nil {
-				log.Fatalf("Error running VWAP calculator: %v", err)
-				return
-			}
-			v.vwapWindow.Push(t)
-
+	go func() {
+		defer close(v.chanTradeOut)
+		for newTrade := range v.chanTradeIn {
+			vwap := v.calculate(newTrade)
+			v.chanTradeOut <- writer.WriterData{Currency: newTrade.Currency, VWAP: vwap}
 		}
-		vwap := v.Calculate(&t, &removeElem)
-		if vwap != 0 {
-			fmt.Printf("Currency %v, Vwap : %v\n", t.Currency, vwap)
-		}
-
-	}
-
+	}()
 }
 
-func (v *Vwap) Calculate(addElement *models.Trade, removeElement *models.Trade) float64 {
-	v.vwapSum += addElement.Price * addElement.Quantity
-	v.vwapQuantitySum += addElement.Quantity
+func (v *Vwap) calculate(newTrade models.Trade) float64 {
+	if v.vwapWindow.Len() >= v.windowSize {
+		removedTrade, err := v.vwapWindow.Pop()
+		if err != nil {
+			log.Fatalf("Error running VWAP calculator: %v", err)
+			return 0
+		}
 
-	if removeElement != nil {
-		v.vwapSum -= removeElement.Price * removeElement.Quantity
-		v.vwapQuantitySum -= removeElement.Quantity
+		v.vwapSum -= removedTrade.Price * removedTrade.Quantity
+		v.vwapQuantitySum -= removedTrade.Quantity
 	}
+	v.vwapWindow.Push(newTrade)
+	v.vwapSum += newTrade.Price * newTrade.Quantity
+	v.vwapQuantitySum += newTrade.Quantity
+
 	var vwap float64
-	if v.vwapWindow.Len() == WindowSize {
-		vwap = v.vwapSum / v.vwapQuantitySum
-	}
+	vwap = v.vwapSum / v.vwapQuantitySum
+
 	return vwap
 }

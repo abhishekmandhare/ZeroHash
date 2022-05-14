@@ -1,1 +1,1 @@
-{"buildTargets":[".PHONY","docker-build","docker-clean","docker-run","make.exe","run","vendor"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
+{"buildTargets":["PHONY","dep-install","docker-build","docker-clean","docker-run","lint","run","test","vendor"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}

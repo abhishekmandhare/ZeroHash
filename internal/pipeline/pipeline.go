@@ -1,38 +1,39 @@
 package pipeline
 
 import (
-	"context"
+	"log"
+	"sync"
 
+	"github.com/abhishekmandhare/zeroHash/internal/merge"
 	"github.com/abhishekmandhare/zeroHash/internal/models"
+	"github.com/abhishekmandhare/zeroHash/internal/split"
 	"github.com/abhishekmandhare/zeroHash/internal/vwap"
+	"github.com/abhishekmandhare/zeroHash/internal/writer"
 )
 
-type Pipeline struct {
-	vwapChannels map[string]*vwap.Vwap
-	ctx          context.Context
-}
+func Connect(sourceTrade <-chan models.Trade, products []string, vwapWindowSize int) {
+	vwapChannels := make(map[string]*vwap.Vwap)
+	outChannels := split.Split(sourceTrade, products)
+	chanWriters := make([]chan writer.WriterData, 0)
 
-func NewPipeline(ctx context.Context, products []string) *Pipeline {
-	outChannels := make(map[string]*vwap.Vwap)
-
-	for _, product := range products {
-		outChannels[product] = vwap.NewVwap()
-		go outChannels[product].RunCalculator()
+	for product, outChannel := range outChannels {
+		chanWriter := make(chan writer.WriterData)
+		vwapChannels[product] = vwap.NewVwap(vwapWindowSize, outChannel, chanWriter)
+		vwapChannels[product].RunCalculator()
+		chanWriters = append(chanWriters, chanWriter)
 	}
-	return &Pipeline{ctx: ctx, vwapChannels: outChannels}
-}
 
-func (p *Pipeline) Close() {
-	for _, vwapch := range p.vwapChannels {
-		vwapch.CloseChannel()
-	}
-}
+	mergedChanWriter := merge.Merge(chanWriters...)
+	writeStreamer := writer.NewWriter()
 
-func (p *Pipeline) SendTrade(t models.Trade) {
+	wg := sync.WaitGroup{}
 
-	if vwapCh, found := p.vwapChannels[t.Currency]; found {
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		writeStreamer.WriteData(mergedChanWriter)
+	}()
 
-		vwapCh.SendTradeToChannel(t)
-
-	}
+	wg.Wait()
+	log.Println("Closing connect")
 }
