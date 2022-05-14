@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/abhishekmandhare/zeroHash/internal/models"
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 )
 
 func Split(source <-chan models.Trade, currencies []string) map[string]chan models.Trade {

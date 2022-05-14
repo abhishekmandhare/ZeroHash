@@ -3,21 +3,21 @@ package vwap
 import (
 	"log"
 
-	"github.com/abhishekmandhare/zeroHash/internal/models"
-	"github.com/abhishekmandhare/zeroHash/internal/queue"
-	"github.com/abhishekmandhare/zeroHash/internal/writer"
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
+	"github.com/abhishekmandhare/zeroHash/internal/app/stream"
+	"github.com/abhishekmandhare/zeroHash/internal/arch/queue"
 )
 
 type Vwap struct {
 	vwapWindow      *queue.Queue[models.Trade]
 	chanTradeIn     <-chan models.Trade
-	chanTradeOut    chan<- writer.WriterData
+	chanTradeOut    chan<- stream.StreamData
 	vwapSum         float64
 	vwapQuantitySum float64
 	windowSize      int
-	}
+}
 
-func NewVwap(vwapWindowSize int, chanTradeIn <-chan models.Trade, chanTradeOut chan<- writer.WriterData) *Vwap {
+func NewVwap(vwapWindowSize int, chanTradeIn <-chan models.Trade, chanTradeOut chan<- stream.StreamData) *Vwap {
 
 	return &Vwap{
 		vwapWindow:   queue.NewQueue[models.Trade](),
@@ -32,7 +32,7 @@ func (v *Vwap) RunCalculator() {
 		defer close(v.chanTradeOut)
 		for newTrade := range v.chanTradeIn {
 			vwap := v.calculate(newTrade)
-			v.chanTradeOut <- writer.WriterData{Currency: newTrade.Currency, VWAP: vwap}
+			v.chanTradeOut <- stream.StreamData{Currency: newTrade.Currency, VWAP: vwap}
 		}
 	}()
 }
@@ -52,8 +52,5 @@ func (v *Vwap) calculate(newTrade models.Trade) float64 {
 	v.vwapSum += newTrade.Price * newTrade.Quantity
 	v.vwapQuantitySum += newTrade.Quantity
 
-	var vwap float64
-	vwap = v.vwapSum / v.vwapQuantitySum
-
-	return vwap
+	return v.vwapSum / v.vwapQuantitySum
 }

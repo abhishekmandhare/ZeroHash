@@ -8,10 +8,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
+	"github.com/abhishekmandhare/zeroHash/internal/app/pipeline"
 	"github.com/abhishekmandhare/zeroHash/internal/client"
 	"github.com/abhishekmandhare/zeroHash/internal/config"
-	"github.com/abhishekmandhare/zeroHash/internal/models"
-	"github.com/abhishekmandhare/zeroHash/internal/pipeline"
 )
 
 func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeChannel chan<- models.Trade) func() error {

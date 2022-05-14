@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/abhishekmandhare/zeroHash/cmd/startup"
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 	"github.com/abhishekmandhare/zeroHash/internal/config"
-	"github.com/abhishekmandhare/zeroHash/internal/models"
 	"golang.org/x/sync/errgroup"
 )
 

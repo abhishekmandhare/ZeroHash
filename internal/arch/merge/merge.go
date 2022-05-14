@@ -3,18 +3,16 @@ package merge
 import (
 	"log"
 	"sync"
-
-	"github.com/abhishekmandhare/zeroHash/internal/writer"
 )
 
-func Merge(sources ...chan writer.WriterData) chan writer.WriterData {
-	destination := make(chan writer.WriterData)
+func Merge[T any](sources ...chan T) chan T {
+	destination := make(chan T)
 	wg := sync.WaitGroup{}
 
 	wg.Add(len(sources))
 
 	for _, source := range sources {
-		go func(chIn <-chan writer.WriterData) {
+		go func(chIn <-chan T) {
 			defer wg.Done()
 
 			for n := range chIn {

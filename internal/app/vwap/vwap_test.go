@@ -3,14 +3,14 @@ package vwap
 import (
 	"testing"
 
-	"github.com/abhishekmandhare/zeroHash/internal/models"
-	"github.com/abhishekmandhare/zeroHash/internal/writer"
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
+	"github.com/abhishekmandhare/zeroHash/internal/app/stream"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCalculate(t *testing.T) {
 
-	vwap := NewVwap(5, make(<-chan models.Trade), make(chan<- writer.WriterData))
+	vwap := NewVwap(5, make(<-chan models.Trade), make(chan<- stream.StreamData))
 
 	require.Equal(t, 25.1, vwap.calculate(models.Trade{Currency: "XXX", Price: 25.1, Quantity: 100}))                // 2510
 	require.Equal(t, 25.133333333333333, vwap.calculate(models.Trade{Currency: "XXX", Price: 25.2, Quantity: 50}))   //1260

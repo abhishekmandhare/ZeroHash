@@ -1,14 +1,14 @@
-package writer
+package stream
 
 import (
 	"fmt"
 	"log"
 )
 
-type ConsoleWriter struct {
+type ConsoleStreamer struct {
 }
 
-func (c ConsoleWriter) WriteData(chanWriterData chan WriterData) {
+func (c ConsoleStreamer) StreamData(chanWriterData chan StreamData) {
 	for data := range chanWriterData {
 		fmt.Printf("Currency: %v, VWAP: %v\n", data.Currency, data.VWAP)
 	}

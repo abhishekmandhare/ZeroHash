@@ -7,8 +7,8 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 	"github.com/abhishekmandhare/zeroHash/internal/client/model"
-	"github.com/abhishekmandhare/zeroHash/internal/models"
 	"github.com/gorilla/websocket"
 )
 
