@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"strconv"
@@ -43,13 +42,7 @@ func (client *Client) Subscribe() error {
 		ProductIDs: client.ProductIds,
 	}
 
-	subEvent, err := json.Marshal(subMessage)
-	if err != nil {
-		log.Fatalf("Unable to marshal : %v", err)
-		return err
-	}
-
-	err = c.WriteMessage(websocket.TextMessage, subEvent)
+	err = c.WriteJSON(subMessage)
 	if err != nil {
 		log.Fatalf("write err : %v", err)
 		return err
@@ -66,10 +59,11 @@ func (client *Client) Read() (*models.Trade, error) {
 
 	m := &model.MatchMsg{}
 	err := client.connection.ReadJSON(m)
+	client.connection.ReadMessage()
 	if err != nil {
 		return nil, err
 	}
-	//log.Printf("received: %v", m)
+
 	switch m.Type {
 	case "error":
 		return nil, fmt.Errorf("Received error from websocket")

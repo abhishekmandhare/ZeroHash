@@ -3,15 +3,19 @@ package split
 import (
 	"log"
 	"sync"
-
-	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 )
 
-func Split(source <-chan models.Trade, currencies []string) map[string]chan models.Trade {
-	destinations := make(map[string]chan models.Trade)
+type SplitType interface {
+	GetKey() string
+}
 
-	for _, currency := range currencies {
-		destinations[currency] = make(chan models.Trade)
+// Split will split the incoming channel into n number of outgoing channels where n is the length of the keys slice.
+// Split happens based on keys of the SplitType.
+func Split[T SplitType](source <-chan T, keys []string) map[string]chan T {
+	destinations := make(map[string]chan T)
+
+	for _, key := range keys {
+		destinations[key] = make(chan T)
 	}
 
 	wg := sync.WaitGroup{}
@@ -20,7 +24,7 @@ func Split(source <-chan models.Trade, currencies []string) map[string]chan mode
 	go func() {
 		defer wg.Done()
 		for s := range source {
-			if vwapCh, found := destinations[s.Currency]; found {
+			if vwapCh, found := destinations[s.GetKey()]; found {
 				vwapCh <- s
 			}
 		}

@@ -2,7 +2,6 @@ package pipeline
 
 import (
 	"log"
-	"sync"
 
 	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 	"github.com/abhishekmandhare/zeroHash/internal/app/stream"
@@ -11,29 +10,24 @@ import (
 	"github.com/abhishekmandhare/zeroHash/internal/arch/split"
 )
 
-func Connect(sourceTrade <-chan models.Trade, products []string, vwapWindowSize int) {
-	vwapChannels := make(map[string]*vwap.Vwap)
-	outChannels := split.Split(sourceTrade, products)
-	chanWriters := make([]chan stream.StreamData, 0)
+// Connect splits incoming sourceTrade channel into n channels where n is number of products.
+// It then feeds each channel to a seperate vwap calculator routine.
+// It also merges each of the vwap calculator output channels into a single channel which is fed to stream.
+func Connect(sourceTradeChan <-chan models.Trade, products []string, vwapCalculationWindowSize int) {
+	prodVwapMap := map[string]*vwap.Vwap{}
+	splitTradeChans := split.Split(sourceTradeChan, products)
+	streamerChans := make([]chan stream.StreamData, 0)
 
-	for product, outChannel := range outChannels {
-		chanWriter := make(chan stream.StreamData)
-		vwapChannels[product] = vwap.NewVwap(vwapWindowSize, outChannel, chanWriter)
-		vwapChannels[product].RunCalculator()
-		chanWriters = append(chanWriters, chanWriter)
+	for product, tradeChan := range splitTradeChans {
+		streamerChan := make(chan stream.StreamData)
+		prodVwapMap[product] = vwap.NewVwap(vwapCalculationWindowSize, tradeChan, streamerChan)
+		prodVwapMap[product].RunCalculator()
+		streamerChans = append(streamerChans, streamerChan)
 	}
 
-	mergedChanWriter := merge.Merge(chanWriters...)
+	mergedStreamerChan := merge.Merge(streamerChans...)
 	writeStreamer := stream.NewStreamer()
 
-	wg := sync.WaitGroup{}
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		writeStreamer.StreamData(mergedChanWriter)
-	}()
-
-	wg.Wait()
+	writeStreamer.StreamData(mergedStreamerChan)
 	log.Println("Closing connect")
 }

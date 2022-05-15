@@ -6,7 +6,7 @@ import (
 )
 
 func Merge[T any](sources ...chan T) chan T {
-	destination := make(chan T)
+	destination := make(chan T, len(sources))
 	wg := sync.WaitGroup{}
 
 	wg.Add(len(sources))

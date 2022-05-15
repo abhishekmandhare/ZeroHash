@@ -23,7 +23,7 @@ func main() {
 
 	ctx := context.Background()
 	errGrp, gCtx := errgroup.WithContext(ctx)
-	tradeChannel := make(chan models.Trade, 100)
+	tradeChannel := make(chan models.Trade, len(config.Spec.Products))
 	errGrp.Go(startup.RunAppClient(gCtx, config, tradeChannel))
 	errGrp.Go(startup.RunPipeline(ctx, config, tradeChannel))
 	errGrp.Go(startup.RunSignalListener(gCtx))

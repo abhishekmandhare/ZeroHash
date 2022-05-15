@@ -6,3 +6,7 @@ type Trade struct {
 	Price    float64
 	Quantity float64
 }
+
+func (t Trade) GetKey() string {
+	return t.Currency
+}

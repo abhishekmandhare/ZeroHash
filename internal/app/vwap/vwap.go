@@ -8,31 +8,32 @@ import (
 	"github.com/abhishekmandhare/zeroHash/internal/arch/queue"
 )
 
+// Vwap struct takes a trade channel and outputs the calculated vwap is StreamData channel.
 type Vwap struct {
-	vwapWindow      *queue.Queue[models.Trade]
-	chanTradeIn     <-chan models.Trade
-	chanTradeOut    chan<- stream.StreamData
-	vwapSum         float64
-	vwapQuantitySum float64
-	windowSize      int
+	vwapWindow         *queue.Queue[models.Trade]
+	tradeInChan        <-chan models.Trade
+	vwapStreamDataChan chan<- stream.StreamData
+	vwapSum            float64
+	vwapQuantitySum    float64
+	windowSize         int
 }
 
 func NewVwap(vwapWindowSize int, chanTradeIn <-chan models.Trade, chanTradeOut chan<- stream.StreamData) *Vwap {
-
 	return &Vwap{
-		vwapWindow:   queue.NewQueue[models.Trade](),
-		chanTradeIn:  chanTradeIn,
-		chanTradeOut: chanTradeOut,
-		windowSize:   vwapWindowSize,
+		vwapWindow:         queue.NewQueue[models.Trade](),
+		tradeInChan:        chanTradeIn,
+		vwapStreamDataChan: chanTradeOut,
+		windowSize:         vwapWindowSize,
 	}
 }
 
+// RunCalculator runs the vwap calculator in a sepereate goroutine reading from tradeIn channel and outputting the calculation to the vwapStreamData Channel.
 func (v *Vwap) RunCalculator() {
 	go func() {
-		defer close(v.chanTradeOut)
-		for newTrade := range v.chanTradeIn {
+		defer close(v.vwapStreamDataChan)
+		for newTrade := range v.tradeInChan {
 			vwap := v.calculate(newTrade)
-			v.chanTradeOut <- stream.StreamData{Currency: newTrade.Currency, VWAP: vwap}
+			v.vwapStreamDataChan <- stream.StreamData{Currency: newTrade.Currency, VWAP: vwap}
 		}
 	}()
 }
