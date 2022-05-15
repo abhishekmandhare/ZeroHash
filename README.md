@@ -1,6 +1,6 @@
 # ZeroHash VWAP Calculator
 
-The goal of this project is to create a real-time VWAP (volume-weighted average price) calculation engine. Youwill use the coinbase websocket feed to stream in trade executions and update the VWAP for each trading pairas updates become available. You’re free to implement the solution however you see fit but you should focuson efficiency
+The goal of this project is to create a real-time VWAP (volume-weighted average price) calculation engine. App uses the coinbase websocket feed to stream in trade executions and update the VWAP for each trading pair as updates become available. 
 
 ### Commands
 
@@ -25,6 +25,18 @@ The goal of this project is to create a real-time VWAP (volume-weighted average 
     if the lint command fails.
 
 * Test
+
     ```make test```
+
+Instructions
+-----
+
+1. Clone this repository.
+2. Create a new branch called `xxx`.
+3. Create a pull request from your `xxx` branch to the main branch.
+
+### Design
+
+![VWAP design](/doc/design/design.PNG?raw=true "Data flow")
 
 ## Documentation

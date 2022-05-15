@@ -59,7 +59,6 @@ func (client *Client) Read() (*models.Trade, error) {
 
 	m := &model.MatchMsg{}
 	err := client.connection.ReadJSON(m)
-	client.connection.ReadMessage()
 	if err != nil {
 		return nil, err
 	}
