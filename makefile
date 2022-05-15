@@ -1,4 +1,8 @@
 run:
+	go run cmd/main.go --config ./config/local.yaml
+
+.PHONY: run-win
+run-win:
 	go run .\cmd\main.go --config .\config\local.yaml
 
 .PHONY: docker-clean

@@ -39,4 +39,7 @@ Instructions
 
 ![VWAP design](/doc/design/design.PNG?raw=true "Data flow")
 
-## Documentation
+## Requirements
+
+1. **Docker**
+2. **Golang 1.18**
