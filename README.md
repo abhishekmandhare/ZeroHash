@@ -6,25 +6,25 @@ The goal of this project is to create a real-time VWAP (volume-weighted average 
 
 * Run app locally
     
-    ```make run
+    ```make run ```
 
 * Run in a docker
     
-    ```make docker-run
+    ```make docker-run```
 
 * Vendor 
     
-    ```make vendor
+    ```make vendor```
 
 * Lint
     
-    ```make lint
+    ```make lint```
 
     Run 
-    ```dep-install
+    ```dep-install```
     if the lint command fails.
 
 * Test
-    ```make test
+    ```make test```
 
 ## Documentation
