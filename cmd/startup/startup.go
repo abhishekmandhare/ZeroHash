@@ -16,8 +16,8 @@ import (
 
 func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeChannel chan<- models.Trade) func() error {
 	return func() error {
-		cl := client.NewClient(ctx, config.Spec.Products, config.Spec.Websocket)
-		if err := cl.Subscribe(); err != nil {
+		client := client.NewClient(ctx, config.Spec.Products, config.Spec.Websocket)
+		if err := client.Subscribe(); err != nil {
 			return err
 		}
 
@@ -26,15 +26,17 @@ func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeCha
 			select {
 			case <-ctx.Done():
 				log.Println("App Client terminated by upstream")
-				cl.Close()
+				client.Close()
 
 				return nil
 			default:
-				trade, err := cl.Read()
+				trade, err := client.Read()
 				if err != nil {
 					return err
 				}
-				tradeChannel <- *trade
+				if trade != nil {
+					tradeChannel <- *trade
+				}
 			}
 		}
 	}

@@ -6,11 +6,13 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/gorilla/websocket"
+
 	"github.com/abhishekmandhare/zeroHash/internal/app/models"
 	"github.com/abhishekmandhare/zeroHash/internal/client/model"
-	"github.com/gorilla/websocket"
 )
 
+// Client struct is used to read "Matches" data stream from the given websocket in JSON format.
 type Client struct {
 	ProductIds []string
 	ctx        context.Context
@@ -18,6 +20,7 @@ type Client struct {
 	connection *websocket.Conn
 }
 
+// NewClient creates and returns a Client struct.
 func NewClient(ctx context.Context, productIds []string, websocket string) *Client {
 	return &Client{
 		ProductIds: productIds,
@@ -26,23 +29,23 @@ func NewClient(ctx context.Context, productIds []string, websocket string) *Clie
 	}
 }
 
+// Subscribe sends a "matches" subscription message to websocket in order to receive match data.
 func (client *Client) Subscribe() error {
 
-	c, _, err := websocket.DefaultDialer.Dial(client.Websocket, nil)
+	connection, _, err := websocket.DefaultDialer.Dial(client.Websocket, nil)
 	if err != nil {
 		log.Fatalf("dial: %v", err)
 	}
 
-	client.connection = c
+	client.connection = connection
 
-	// sub
 	subMessage := model.CoinbaseSubscribeMsg{
 		Type:       "subscribe",
 		Channels:   []string{"matches"},
 		ProductIDs: client.ProductIds,
 	}
 
-	err = c.WriteJSON(subMessage)
+	err = client.connection.WriteJSON(subMessage)
 	if err != nil {
 		log.Fatalf("write err : %v", err)
 		return err
@@ -51,10 +54,13 @@ func (client *Client) Subscribe() error {
 	return nil
 }
 
+// Close closes the websocket stream.
 func (client *Client) Close() {
 	client.connection.Close()
 }
 
+// Read reads the "match" messages from websocket. In case of errors, the error is returned.
+// All other messages are ignored.
 func (client *Client) Read() (*models.Trade, error) {
 
 	m := &model.MatchMsg{}
@@ -89,7 +95,6 @@ func (client *Client) Read() (*models.Trade, error) {
 		return trade, nil
 	default:
 		log.Printf("Received unhandled message: %v", m.Type)
-		return &models.Trade{}, nil
+		return nil, nil
 	}
-
 }
