@@ -16,7 +16,7 @@ The goal of this project is to create a real-time VWAP (volume-weighted average 
     
 For windows:
     
-    ```make run-win```
+    make run-win
 
 * Run in a docker
     
