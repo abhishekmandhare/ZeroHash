@@ -2,6 +2,12 @@
 
 The goal of this project is to create a real-time VWAP (volume-weighted average price) calculation engine. App uses the coinbase websocket feed to stream in trade executions and update the VWAP for each trading pair as updates become available. 
 
+## Requirements
+
+1. **Docker**
+2. **Golang 1.18**
+
+
 ### Commands
 
 * Run app locally
@@ -43,7 +49,16 @@ Instructions
 
 ![VWAP design](/doc/design/design.PNG?raw=true "Data flow")
 
-## Requirements
+## VWAP calculation
 
-1. **Docker**
-2. **Golang 1.18**
+VWAP is calculated using below formula
+    
+    - Sum(price*size) / (size)
+    
+VWAP is calculated using a maximum of 200 data points. A queue is used to maintain a window size of 200. If 201the element is pushed in, then the 1st element is ppoped out to maintain the window size.
+
+### Future improvements:
+
+1. Add integration testing by mocking the webscoket connection
+2. Improve efficiency of queue by replacing datastructure with a more efficient one.
+
