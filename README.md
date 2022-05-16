@@ -53,7 +53,7 @@ Instructions
 
 VWAP is calculated using below formula
     
-    - Sum(price*size) / (size)
+     Sum(price*size) / Sum(size)
     
 VWAP is calculated using a maximum of 200 data points. A queue is used to maintain a window size of 200. If 201the element is pushed in, then the 1st element is ppoped out to maintain the window size.
 
