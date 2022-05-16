@@ -14,6 +14,7 @@ import (
 	"github.com/abhishekmandhare/zeroHash/internal/config"
 )
 
+// RunAppClient runs the websocket client and terminates on context closure or error.
 func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeChannel chan<- models.Trade) func() error {
 	return func() error {
 		client := client.NewClient(ctx, config.Spec.Products, config.Spec.Websocket)
@@ -42,6 +43,7 @@ func RunAppClient(ctx context.Context, config *config.AppConfiguration, tradeCha
 	}
 }
 
+// RunPipeline runs the pipeline which connects channels into calculator and streams and terminates on context closure or error. 
 func RunPipeline(ctx context.Context, config *config.AppConfiguration, tradeChannel <-chan models.Trade) func() error {
 	return func() error {
 		donePipe := make(chan interface{})
